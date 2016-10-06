@@ -3,20 +3,18 @@
 
 TEST(ray2d_test, test_construction)
 {
-  // Тест на создание объекта по умолчанию.
-  Point2D p1;
+  Point2D p1 = {1.0f, 1.0f};
   Ray2D r1(p1, p1);
   EXPECT_EQ(r1.origin(), p1);
-  EXPECT_EQ(r1.direction(), p1);
+  EXPECT_FLOAT_EQ(r1.direction() * r1.direction(), 1.0);
+  EXPECT_FLOAT_EQ(r1.direction() * p1, sqrt(p1 * p1));
 
-
-  // Тест на создание объекта с параметрами.
   Point2D p2 = { 1.2f, 2.4f };
   Ray2D r2(p1, p2);
   EXPECT_EQ(r2.origin(), p1);
-  EXPECT_EQ(r2.direction(), p2);
+  EXPECT_FLOAT_EQ(r2.direction() * r2.direction(), 1.0);
+  EXPECT_FLOAT_EQ(r2.direction() * p2, sqrt(p2 * p2));
 
-  // Тест на создание копии объекта.
   Ray2D r3 = r2;
   EXPECT_EQ(r3, r2);
 }

@@ -7,11 +7,19 @@ class Ray2D
 {
 public:
   Ray2D(Point2D const & origin, Point2D const & direction)
-          : m_origin(origin), m_direction(direction)
-  {}
+    : m_origin(origin), m_direction(direction)
+  {
+    NormalizeDirection();
+  }
 
-  bool operator == (Ray2D const & obj) const {
+  bool operator == (Ray2D const & obj) const
+  {
     return m_direction == obj.m_direction && m_origin == obj.m_origin;
+  }
+
+  bool operator != (Ray2D const & obj) const
+  {
+    return !operator==(obj);
   }
 
   Ray2D & operator = (Ray2D const & obj)
@@ -22,47 +30,62 @@ public:
     return *this;
   }
 
-  bool operator != (Ray2D const & obj) const
+  Point2D const & origin() const
   {
-    return !operator==(obj);
+    return m_origin;
   }
 
-  Point2D& origin() { return m_origin; }
+  Point2D const & direction() const
+  {
+    return m_direction;
+  }
 
-  Point2D& direction() { return m_direction; }
-
-  bool Intersects(const Box2D& box)
+  bool Intersects(const Box2D & box) const
   {
     bool cross;
     double res;
     double min_x = box.p1().x();
     double max_x = box.p2().x();
-
     double min_y = box.p1().y();
     double max_y = box.p2().y();
 
-    res = crossXLevel(max_x, cross);
+    res = CrossXLevel(max_x, cross);
     if ( cross && ((res - min_y) * (res - max_y) <= 0))
       return true;
 
-    res = crossXLevel(min_x, cross);
+    res = CrossXLevel(min_x, cross);
     if ( cross && ((res - min_y) * (res - max_y) <= 0))
       return true;
 
-    res = crossYLevel(max_y, cross);
+    res = CrossYLevel(max_y, cross);
     if ( cross && ((res - min_x) * (res - max_x) <= 0))
       return true;
 
-    res = crossYLevel(min_y, cross);
+    res = CrossYLevel(min_y, cross);
     if ( cross && ((res - min_x) * (res - max_x) <= 0))
       return true;
-
 
     return false;
   }
 
+  bool SetDirection(const Point2D & direction)
+  {
+    if (direction * direction > 0)
+    {
+      m_direction = direction;
+      NormalizeDirection();
+      return true;
+    }
+    return false;
+  }
+
+  void SetOrigin(const Point2D & origin)
+  {
+    m_origin = origin;
+  }
+
 protected:
-  double crossXLevel(double x, bool& cross)
+  double CrossXLevel(double x, bool & cross) const
   {
     if (m_direction.x() != 0)
     {
@@ -81,7 +104,7 @@ protected:
     return 0;
   }
 
-  double  crossYLevel(double y, bool& cross)
+  double CrossYLevel(double y, bool & cross) const
   {
     if (m_direction.y() != 0)
     {
@@ -100,6 +123,11 @@ protected:
     return 0;
   }
 private:
+
+  void NormalizeDirection()
+  {
+    m_direction /= sqrt(m_direction * m_direction);
+  }
 
   Point2D m_origin;
   Point2D m_direction;
