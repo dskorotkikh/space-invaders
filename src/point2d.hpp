@@ -67,6 +67,12 @@ public:
     return m_y < obj.m_y;
   }
 
+  bool operator > (Point2D const & obj) const
+  {
+    return !((*this < obj) || (*this == obj));
+  }
+
+
   // Сложение.
   Point2D operator + (Point2D const & obj) const
   {
@@ -96,6 +102,10 @@ public:
   {
     //TODO: обработать деление на 0.
     return { m_x / scale, m_y / scale };
+  }
+
+  double operator * (const Point2D& obj) const {
+    return m_x * obj.m_x + m_y * obj.m_y ;
   }
 
   Point2D & operator += (Point2D const & obj)
@@ -153,9 +163,3 @@ private:
 
   float m_x = 0.0f, m_y = 0.0f;
 };
-
-std::ostream & operator << (std::ostream & os, Point2D const & obj)
-{
-  os << "Point2D {" << obj.x() << ", " << obj.y() << "}";
-  return os;
-}

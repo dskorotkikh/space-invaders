@@ -92,10 +92,3 @@ TEST(point2d_test, test_hash)
   hashTable.insert(Point2D(1.0f, 0.0f));
   EXPECT_EQ(hashTable.size(), 2);
 }
-
-TEST(point2d_test, test_output)
-{
-  std::stringstream s;
-  s << Point2D(1.2f, 0.2f);
-  EXPECT_EQ(s.str(), "Point2D {1.2, 0.2}");
-}
