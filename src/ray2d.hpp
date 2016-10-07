@@ -44,10 +44,10 @@ public:
   {
     bool cross;
     double res;
-    double min_x = box.p1().x();
-    double max_x = box.p2().x();
-    double min_y = box.p1().y();
-    double max_y = box.p2().y();
+    double min_x = box.boxMin().x();
+    double max_x = box.boxMax().x();
+    double min_y = box.boxMin().y();
+    double max_y = box.boxMax().y();
 
     res = CrossXLevel(max_x, cross);
     if ( cross && ((res - min_y) * (res - max_y) <= 0))

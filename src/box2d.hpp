@@ -7,30 +7,28 @@ class Box2D
 public:
   Box2D(const Point2D & p1, const Point2D & p2)
   {
-    float min_x = std::min(p1.x(), p2.x());
-    float max_x = std::max(p1.x(), p2.x());
-    float min_y = std::min(p1.y(), p2.y());
-    float max_y = std::max(p1.y(), p2.y());
-    m_p1 = {min_x, min_y};
-    m_p2 = {max_x, max_y};
+    m_BoxMin = {
+      std::min(p1.x(), p2.x()),
+      std::min(p1.y(), p2.y())
+    };
+    m_BoxMax = {
+      std::max(p1.x(), p2.x()),
+      std::max(p1.y(), p2.y())
+    };
   }
 
   bool Intersects(const Box2D & box) const
   {
-    Point2D l1, r1, l2, r2;
-    // Defining left and right points of the boxes
-    l1 = (p1() > p2()) ? p2() : p1();
-    r1 = (p1() > p2()) ? p1() : p2();
-    l2 = (box.p1() > box.p2()) ? box.p2() : box.p1();
-    r2 = (box.p1() > box.p2()) ? box.p1() : box.p2();
-    return !((l1.x() > r2.x()) || (r1.x() < l2.x()) ||
-             std::max(l2.y(),r2.y()) < std::min(l1.y(),r1.y()) ||
-             std::max(l1.y(),r1.y()) < std::min(l2.y(),r2.y()));
+    if (m_BoxMax.x() < box.m_BoxMin.x()) return false;
+    if (m_BoxMin.x() > box.m_BoxMax.x()) return false;
+    if (m_BoxMax.y() < box.m_BoxMin.y()) return false;
+    if (m_BoxMin.y() > box.m_BoxMax.y()) return false;
+    return true;
   }
 
-  Point2D const & p1() const { return m_p1; }
-  Point2D const & p2() const { return m_p2; }
+  Point2D const & boxMin() const { return m_BoxMin; }
+  Point2D const & boxMax() const { return m_BoxMax; }
 
 private:
-  Point2D m_p1, m_p2;
+  Point2D m_BoxMin, m_BoxMax;
 };
