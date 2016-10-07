@@ -7,10 +7,10 @@ TEST(box2d_test, test_construction)
   Point2D p2 = {1.0f, 1.0f};
   Box2D b1(p1, p2);
 
-  EXPECT_EQ(b1.p1(), p1);
-  EXPECT_EQ(b1.p2(), p2);
-  EXPECT_NE(b1.p1(), p2);
-  EXPECT_NE(b1.p2(), p1);
+  EXPECT_EQ(b1.boxMin(), p1);
+  EXPECT_EQ(b1.boxMax(), p2);
+  EXPECT_NE(b1.boxMin(), p2);
+  EXPECT_NE(b1.boxMax(), p1);
 }
 
 TEST(box2d_test, test_intersection)

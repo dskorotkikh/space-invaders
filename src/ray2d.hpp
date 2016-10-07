@@ -40,7 +40,7 @@ public:
     return m_direction;
   }
 
-  bool Intersects(const Box2D & box) const
+  bool Intersects(Box2D const & box) const
   {
     bool cross;
     double res;
