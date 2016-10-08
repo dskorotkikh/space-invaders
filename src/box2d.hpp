@@ -17,6 +17,38 @@ public:
     };
   }
 
+  Box2D(Box2D const & other)
+  {
+    m_boxMax = other.m_boxMax;
+    m_boxMin = other.m_boxMin;
+  }
+
+  Box2D(Box2D && other)
+  {
+    std::swap(other.m_boxMax, m_boxMax);
+    std::swap(other.m_boxMin, m_boxMin);
+  }
+
+  Box2D & operator = (Box2D const & obj)
+  {
+    if (this == &obj) return *this;
+    m_boxMin = obj.m_boxMin;
+    m_boxMax = obj.m_boxMax;
+    return *this;
+  }
+
+  Box2D & operator = (Box2D && obj)
+  {
+    std::swap(m_boxMin, obj.m_boxMin);
+    std::swap(m_boxMax, obj.m_boxMax);
+    return *this;
+  }
+
+  bool operator==(Box2D const & other) const
+  {
+    return other.m_boxMax == m_boxMax && other.m_boxMin == m_boxMin;
+  }
+
   bool Intersects(Box2D const & box) const
   {
     if (m_boxMax.x() < box.m_boxMin.x()) return false;

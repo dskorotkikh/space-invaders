@@ -13,6 +13,21 @@ TEST(box2d_test, test_construction)
   EXPECT_NE(b1.boxMax(), p1);
 }
 
+TEST(box2d_test, test_move)
+{
+  Point2D p1 = { 1.0f, 1.0f };
+  Point2D p2 = { 1.2f, 2.4f };
+
+  Box2D b1(p1, p2);
+  Box2D b2 = b1;
+  Box2D b3 = std::move(b1);
+  EXPECT_EQ(b2, b3);
+  Box2D b4 = std::move(b2);
+  EXPECT_EQ(b4, b3);
+  b1 = std::move(b4);
+  EXPECT_EQ(b1, b3);
+}
+
 TEST(box2d_test, test_intersection)
 {
   Point2D p1;

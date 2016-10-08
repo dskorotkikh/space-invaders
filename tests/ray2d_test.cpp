@@ -19,6 +19,25 @@ TEST(ray2d_test, test_construction)
   EXPECT_EQ(r3, r2);
 }
 
+TEST(ray2d_test, test_move)
+{
+  Point2D p1 = { 1.0f, 1.0f };
+  Point2D p2 = { 1.2f, 2.4f };
+
+  Ray2D r1(p1, p1);
+  Ray2D r2(p1, p2);
+  Ray2D r3 = r2;
+  Ray2D r4 = std::move(r2);
+  EXPECT_EQ(r3, r4);
+  Ray2D r5 = std::move(r3);
+  EXPECT_EQ(r5, r4);
+  r5.SetDirection(p1);
+  EXPECT_EQ(r5, r1);
+  r5.SetDirection(p2);
+  r2 = std::move(r4);
+  EXPECT_EQ(r2, r5);
+}
+
 TEST(ray2d_test, test_intersection)
 {
   Point2D p1 = { 0.0f, 0.0f };

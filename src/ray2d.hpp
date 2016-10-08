@@ -12,6 +12,18 @@ public:
     NormalizeDirection();
   }
 
+  Ray2D(Ray2D const & other)
+  {
+    m_direction = other.m_direction;
+    m_origin = other.m_origin;
+  }
+
+  Ray2D(Ray2D && other)
+  {
+    std::swap(other.m_direction, m_direction);
+    std::swap(other.m_origin, m_origin);
+  }
+
   bool operator == (Ray2D const & obj) const
   {
     return m_direction == obj.m_direction && m_origin == obj.m_origin;
@@ -27,6 +39,13 @@ public:
     if (this == &obj) return *this;
     m_origin = obj.m_origin;
     m_direction = obj.m_direction;
+    return *this;
+  }
+
+  Ray2D & operator = (Ray2D && obj)
+  {
+    std::swap(m_origin,obj.m_origin);
+    std::swap(m_direction, obj.m_direction);
     return *this;
   }
 
@@ -68,7 +87,7 @@ public:
     return false;
   }
 
-  bool SetDirection(const Point2D & direction)
+  bool SetDirection(Point2D const & direction)
   {
     if (direction * direction > 0)
     {
@@ -79,7 +98,7 @@ public:
     return false;
   }
 
-  void SetOrigin(const Point2D & origin)
+  void SetOrigin(Point2D const & origin)
   {
     m_origin = origin;
   }
